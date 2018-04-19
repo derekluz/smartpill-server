@@ -2,6 +2,7 @@ const utils = require('../services/utils');
 
 module.exports = function (app, db) {
     app.post('/login', (req, res) => {
+        console.log('POST login');
         const expectedFields = ['email', 'password'];
 
         if(!utils.isValidRequest(req.body, expectedFields)) {
