@@ -6,7 +6,7 @@ module.exports = function (app, db) {
         const expectedFields = ['email', 'password'];
 
         if(!utils.isValidRequest(req.body, expectedFields)) {
-            res.send({ 'error': 'Expected field is missing' });
+            res.json({ 'error': 'Expected field is missing' });
             return;
         }
 
@@ -17,15 +17,15 @@ module.exports = function (app, db) {
         
         db.collection('users').findOne(user, (err, result) => {
             if (err) {
-                res.send({ 'error': err });
+                res.json({ 'error': err });
                 return;
             }
             if (!result) {
-                res.send({ 'error': 'Invalid email or password' });
+                res.status(401).json({ 'error': 'Invalid email or password' });
                 return;
             }
 
-            res.send(result);
+            res.json(result);
         });
     });
 };
