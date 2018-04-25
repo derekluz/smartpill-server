@@ -10,6 +10,7 @@ module.exports = {
 
     isValidRequest: (data, expectedFields) => {
         const hasAllFields = expectedFields.reduce((acc, field) => {
+            console.log('acc', field)
             return acc && data.hasOwnProperty(field);
         }, true);
         return hasAllFields;
