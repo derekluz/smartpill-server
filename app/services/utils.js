@@ -42,7 +42,11 @@ module.exports = {
 
     formatDispenserData: (data) => {
         const formattedData = data.map(medicine => {
-            return module.exports.calculateTimes(medicine);
+            const medicineObj = {
+                dosage: medicine.dosage,
+                times: module.exports.calculateTimes(medicine)
+            };
+            return medicineObj;
         });
         return formattedData;
     }
