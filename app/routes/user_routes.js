@@ -9,7 +9,7 @@ module.exports = function (app, db) {
         const details = { '_id': new ObjectID(id) };
         const user = req.body;
         const expectedFields = ['email', 'password', 'schedule'];
-        console.log(user)
+        console.log(user);
         if (!utils.isValidRequest(user, expectedFields)) {
             res.status(400).send({ 'error': 'Expected field is missing' });
             return;
