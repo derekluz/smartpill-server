@@ -1,23 +1,24 @@
 const ObjectID = require('mongodb').ObjectID;
 const utils = require('../services/utils');
+const socketService = require('../services/socket');
 
-module.exports = function (app, db) {
+module.exports = (app, db) => {
     app.post('/dispenser/:id/alert', (req, res) => {
         console.log('POST Dispenser Alert');
         const id = req.params.id;
         const details = { '_id': new ObjectID(id) };
-        const user = req.body;
-        
-        db.collection('users').findOne(user, (err, result) => {
+
+        db.collection('users').findOne(details, (err, result) => {
             if (err) {
-                res.json({ 'error': err });
+                res.status(500).json({ 'error': err });
                 return;
             }
             if (!result) {
                 res.status(401).json({ 'error': 'Invalid request' });
                 return;
             }
-            res.json(result);
+            socketService.sendAlert(id);
+            res.status(200).json('Alert sent!');
         });
     });
 
@@ -25,9 +26,8 @@ module.exports = function (app, db) {
         console.log('GET Dispenser');
         const id = req.params.id;
         const details = { '_id': new ObjectID(id) };
-        const user = req.body;
-        
-        db.collection('users').findOne(user, (err, result) => {
+
+        db.collection('users').findOne(details, (err, result) => {
             if (err) {
                 res.json({ 'error': err });
                 return;
