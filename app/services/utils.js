@@ -1,4 +1,6 @@
 const crypto = require('crypto');
+const moment = require('moment');
+moment.locale('pt-br');
 
 module.exports = {
 
@@ -49,5 +51,19 @@ module.exports = {
             return medicineObj;
         });
         return formattedData;
+    },
+
+    getPillsForCurrentMinute: (data) => {
+        // TODO: Pegar hora atual, descomentar linha abaixo.
+        // const currentTime = moment().format('LT');
+        const currentTime = '12:15';
+        const formattedData = module.exports.formatDispenserData(data);
+        const pillsForCurrentMinute = formattedData.map(container => {
+            const time = container.times.find(time => {
+                return time === currentTime;
+            });
+            return time ? container.dosage : 0;
+        });
+        return pillsForCurrentMinute;
     }
 };
